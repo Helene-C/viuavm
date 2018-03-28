@@ -166,22 +166,15 @@ viua::internals::types::byte* viua::process::Process::opargc(
 
 viua::internals::types::byte* viua::process::Process::opcall(
     viua::internals::types::byte* addr) {
-    bool return_void = viua::bytecode::decoder::operands::is_void(addr);
-    viua::kernel::Register* return_register = nullptr;
-
-    if (not return_void) {
-        tie(addr, return_register) =
-            viua::bytecode::decoder::operands::fetch_register(addr, this);
-    } else {
-        addr = viua::bytecode::decoder::operands::fetch_void(addr);
-    }
+    auto const return_register = fetch_optional_and_advance_addr<viua::kernel::Register*>(
+        fetch_register, addr, this);
 
     auto call_name = string{};
     auto ot = viua::bytecode::decoder::operands::get_operand_type(addr);
     if (ot == OT_REGISTER_INDEX or ot == OT_POINTER) {
-        viua::types::Function* fn = nullptr;
-        tie(addr, fn) = viua::bytecode::decoder::operands::fetch_object_of<
-            viua::types::Function>(addr, this);
+        auto const fn = fetch_and_advance_addr<viua::types::Function*>(
+            viua::bytecode::decoder::operands::fetch_object_of<
+            viua::types::Function>, addr, this);
 
         call_name = fn->name();
 
@@ -190,8 +183,8 @@ viua::internals::types::byte* viua::process::Process::opcall(
                 static_cast<viua::types::Closure*>(fn)->rs(), false);
         }
     } else {
-        tie(addr, call_name) =
-            viua::bytecode::decoder::operands::fetch_atom(addr, this);
+        call_name = fetch_and_advance_addr<std::string>(
+            viua::bytecode::decoder::operands::fetch_atom, addr, this);
     }
 
     auto const is_native         = scheduler->is_native_function(call_name);
@@ -219,12 +212,12 @@ viua::internals::types::byte* viua::process::Process::opcall(
         }
         auto obj = stack->frame_new->arguments->at(0);
         return call_foreign_method(
-            addr, obj, call_name, return_register, call_name);
+            addr, obj, call_name, return_register.value_or(nullptr), call_name);
     }
 
     auto const caller = (is_native ? &viua::process::Process::call_native
                              : &viua::process::Process::call_foreign);
-    return (this->*caller)(addr, call_name, return_register, "");
+    return (this->*caller)(addr, call_name, return_register.value_or(nullptr), "");
 }
 
 viua::internals::types::byte* viua::process::Process::optailcall(
