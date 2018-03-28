@@ -135,7 +135,7 @@ viua::internals::types::byte* viua::process::Process::opclosure(
         viua::bytecode::decoder::operands::fetch_atom(addr, this);
 
     auto rs = make_unique<viua::kernel::RegisterSet>(
-        currently_used_register_set->size());
+        stack->back()->local_register_set->size());
     auto closure =
         make_unique<viua::types::Closure>(function_name, std::move(rs));
 
