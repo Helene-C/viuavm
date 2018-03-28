@@ -35,11 +35,17 @@ using Register_index = viua::internals::types::register_index;
 
 viua::internals::types::byte* viua::process::Process::opvector(
     viua::internals::types::byte* addr) {
-    auto const [ target_rs, target_ri ] = fetch_and_advance_addr<viua::internals::RegisterSets, Register_index>(
-        viua::bytecode::decoder::operands::fetch_register_type_and_index, addr, this);
+    auto const [target_rs, target_ri] =
+        fetch_and_advance_addr<viua::internals::RegisterSets, Register_index>(
+            viua::bytecode::decoder::operands::fetch_register_type_and_index,
+            addr,
+            this);
 
-    auto const [ pack_start_rs, pack_start_ri ] = fetch_and_advance_addr<viua::internals::RegisterSets, Register_index>(
-        viua::bytecode::decoder::operands::fetch_register_type_and_index, addr, this);
+    auto const [pack_start_rs, pack_start_ri] =
+        fetch_and_advance_addr<viua::internals::RegisterSets, Register_index>(
+            viua::bytecode::decoder::operands::fetch_register_type_and_index,
+            addr,
+            this);
 
     auto const pack_size = fetch_and_advance_addr<Register_index>(
         viua::bytecode::decoder::operands::fetch_register_index, addr, this);
