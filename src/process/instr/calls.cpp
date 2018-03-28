@@ -56,6 +56,7 @@ static auto fetch_optional_and_advance_addr(Fetch_fn<Result> const& fn,
     return {result};
 }
 
+using viua::bytecode::decoder::operands::fetch_register;
 using viua::bytecode::decoder::operands::fetch_register_index;
 using Register_index = viua::internals::types::register_index;
 
@@ -101,13 +102,9 @@ viua::internals::types::byte* viua::process::Process::oppamv(
     viua::internals::types::byte* addr) {
     /** Run pamv instruction.
      */
-    viua::internals::types::register_index parameter_no_operand_index = 0;
-    viua::kernel::Register* source = nullptr;
-
-    tie(addr, parameter_no_operand_index) =
-        viua::bytecode::decoder::operands::fetch_register_index(addr, this);
-    tie(addr, source) =
-        viua::bytecode::decoder::operands::fetch_register(addr, this);
+    auto const parameter_no_operand_index =
+        fetch_and_advance_addr<Register_index>(fetch_register_index, addr, this);
+    auto const source = fetch_and_advance_addr<viua::kernel::Register*>(fetch_register, addr, this);
 
     if (parameter_no_operand_index >= stack->frame_new->arguments->size()) {
         throw make_unique<viua::types::Exception>(
