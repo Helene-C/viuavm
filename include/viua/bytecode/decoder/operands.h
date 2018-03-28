@@ -22,7 +22,9 @@
 
 #pragma once
 
+#include <functional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <viua/bytecode/bytetypedef.h>
@@ -130,6 +132,34 @@ auto fetch_raw_float(viua::internals::types::byte*, viua::process::Process*)
  */
 auto extract_primitive_uint64(viua::internals::types::byte*,
                               viua::process::Process*) -> uint64_t;
+
+template<typename Result>
+using Fetch_fn =
+    std::function<std::tuple<viua::internals::types::byte*, Result>(
+        viua::internals::types::byte*,
+        viua::process::Process*)>;
+template<typename Result>
+auto fetch_and_advance_addr(Fetch_fn<Result> const& fn,
+                            viua::internals::types::byte*& addr,
+                            viua::process::Process* process) -> Result {
+    auto [addr_, result] = fn(addr, process);
+    addr                 = addr_;
+    return result;
+}
+template<typename Result>
+auto fetch_optional_and_advance_addr(Fetch_fn<Result> const& fn,
+                                     viua::internals::types::byte*& addr,
+                                     viua::process::Process* process)
+    -> std::optional<Result> {
+    if (viua::bytecode::decoder::operands::is_void(addr)) {
+        addr = viua::bytecode::decoder::operands::fetch_void(addr);
+        return {};
+    }
+
+    auto [addr_, result] = fn(addr, process);
+    addr                 = addr_;
+    return {result};
+}
 }}}}  // namespace viua::bytecode::decoder::operands
 
 
