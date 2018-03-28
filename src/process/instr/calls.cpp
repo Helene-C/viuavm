@@ -77,8 +77,10 @@ viua::internals::types::byte* viua::process::Process::oppamv(
     /** Run pamv instruction.
      */
     auto const parameter_no_operand_index =
-        fetch_and_advance_addr<Register_index>(fetch_register_index, addr, this);
-    auto const source = fetch_and_advance_addr<viua::kernel::Register*>(fetch_register, addr, this);
+        fetch_and_advance_addr<Register_index>(
+            fetch_register_index, addr, this);
+    auto const source = fetch_and_advance_addr<viua::kernel::Register*>(
+        fetch_register, addr, this);
 
     if (parameter_no_operand_index >= stack->frame_new->arguments->size()) {
         throw make_unique<viua::types::Exception>(
@@ -98,10 +100,12 @@ viua::internals::types::byte* viua::process::Process::oparg(
     viua::internals::types::byte* addr) {
     /** Run arg instruction.
      */
-    auto const target = fetch_optional_and_advance_addr<viua::kernel::Register*>(
+    auto const target =
+        fetch_optional_and_advance_addr<viua::kernel::Register*>(
             fetch_register, addr, this);
     auto const parameter_no_operand_index =
-        fetch_and_advance_addr<Register_index>(fetch_register_index, addr, this);
+        fetch_and_advance_addr<Register_index>(
+            fetch_register_index, addr, this);
 
     if (parameter_no_operand_index >= stack->back()->arguments->size()) {
         auto oss = ostringstream{};
@@ -140,15 +144,18 @@ viua::internals::types::byte* viua::process::Process::opargc(
 
 viua::internals::types::byte* viua::process::Process::opcall(
     viua::internals::types::byte* addr) {
-    auto const return_register = fetch_optional_and_advance_addr<viua::kernel::Register*>(
-        fetch_register, addr, this);
+    auto const return_register =
+        fetch_optional_and_advance_addr<viua::kernel::Register*>(
+            fetch_register, addr, this);
 
     auto call_name = string{};
-    auto ot = viua::bytecode::decoder::operands::get_operand_type(addr);
+    auto ot        = viua::bytecode::decoder::operands::get_operand_type(addr);
     if (ot == OT_REGISTER_INDEX or ot == OT_POINTER) {
         auto const fn = fetch_and_advance_addr<viua::types::Function*>(
             viua::bytecode::decoder::operands::fetch_object_of<
-            viua::types::Function>, addr, this);
+                viua::types::Function>,
+            addr,
+            this);
 
         call_name = fn->name();
 
@@ -190,8 +197,9 @@ viua::internals::types::byte* viua::process::Process::opcall(
     }
 
     auto const caller = (is_native ? &viua::process::Process::call_native
-                             : &viua::process::Process::call_foreign);
-    return (this->*caller)(addr, call_name, return_register.value_or(nullptr), "");
+                                   : &viua::process::Process::call_foreign);
+    return (this->*caller)(
+        addr, call_name, return_register.value_or(nullptr), "");
 }
 
 viua::internals::types::byte* viua::process::Process::optailcall(
@@ -219,11 +227,13 @@ viua::internals::types::byte* viua::process::Process::optailcall(
     stack->state_of(viua::process::Stack::STATE::RUNNING);
 
     auto call_name = string{};
-    auto ot = viua::bytecode::decoder::operands::get_operand_type(addr);
+    auto ot        = viua::bytecode::decoder::operands::get_operand_type(addr);
     if (ot == OT_REGISTER_INDEX or ot == OT_POINTER) {
         auto const fn = fetch_and_advance_addr<viua::types::Function*>(
-        viua::bytecode::decoder::operands::fetch_object_of<
-            viua::types::Function>, addr, this);
+            viua::bytecode::decoder::operands::fetch_object_of<
+                viua::types::Function>,
+            addr,
+            this);
 
         call_name = fn->name();
 
@@ -266,11 +276,13 @@ viua::internals::types::byte* viua::process::Process::optailcall(
 viua::internals::types::byte* viua::process::Process::opdefer(
     viua::internals::types::byte* addr) {
     auto call_name = string{};
-    auto ot = viua::bytecode::decoder::operands::get_operand_type(addr);
+    auto ot        = viua::bytecode::decoder::operands::get_operand_type(addr);
     if (ot == OT_REGISTER_INDEX or ot == OT_POINTER) {
         auto const fn = fetch_and_advance_addr<viua::types::Function*>(
-        viua::bytecode::decoder::operands::fetch_object_of<
-            viua::types::Function>, addr, this);
+            viua::bytecode::decoder::operands::fetch_object_of<
+                viua::types::Function>,
+            addr,
+            this);
 
         call_name = fn->name();
 

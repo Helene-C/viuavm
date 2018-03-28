@@ -39,8 +39,10 @@ using Register_index = viua::internals::types::register_index;
 viua::internals::types::byte* viua::process::Process::opcapture(
     viua::internals::types::byte* addr) {
     auto const target = fetch_and_advance_addr<viua::types::Closure*>(
-    viua::bytecode::decoder::operands::fetch_object_of<
-        viua::types::Closure>, addr, this);
+        viua::bytecode::decoder::operands::fetch_object_of<
+            viua::types::Closure>,
+        addr,
+        this);
 
     auto const target_register = fetch_and_advance_addr<Register_index>(
         viua::bytecode::decoder::operands::fetch_register_index, addr, this);
@@ -77,8 +79,10 @@ viua::internals::types::byte* viua::process::Process::opcapture(
 viua::internals::types::byte* viua::process::Process::opcapturecopy(
     viua::internals::types::byte* addr) {
     auto const target = fetch_and_advance_addr<viua::types::Closure*>(
-    viua::bytecode::decoder::operands::fetch_object_of<
-        viua::types::Closure>, addr, this);
+        viua::bytecode::decoder::operands::fetch_object_of<
+            viua::types::Closure>,
+        addr,
+        this);
 
     auto const target_register = fetch_and_advance_addr<Register_index>(
         viua::bytecode::decoder::operands::fetch_register_index, addr, this);
@@ -100,8 +104,10 @@ viua::internals::types::byte* viua::process::Process::opcapturecopy(
 viua::internals::types::byte* viua::process::Process::opcapturemove(
     viua::internals::types::byte* addr) {
     auto const target = fetch_and_advance_addr<viua::types::Closure*>(
-    viua::bytecode::decoder::operands::fetch_object_of<
-        viua::types::Closure>, addr, this);
+        viua::bytecode::decoder::operands::fetch_object_of<
+            viua::types::Closure>,
+        addr,
+        this);
 
     auto const target_register = fetch_and_advance_addr<Register_index>(
         viua::bytecode::decoder::operands::fetch_register_index, addr, this);
