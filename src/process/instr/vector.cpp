@@ -84,7 +84,8 @@ viua::internals::types::byte* viua::process::Process::opvinsert(
     viua::internals::types::byte* addr) {
     auto const vector_operand = fetch_and_advance_addr<viua::types::Vector*>(
         viua::bytecode::decoder::operands::fetch_object_of<viua::types::Vector>,
-            addr, this);
+        addr,
+        this);
 
     auto object = unique_ptr<viua::types::Value>{};
     if (viua::bytecode::decoder::operands::get_operand_type(addr)
@@ -93,7 +94,7 @@ viua::internals::types::byte* viua::process::Process::opvinsert(
             viua::bytecode::decoder::operands::fetch_object, addr, this);
         object = source->copy();
     } else {
-    auto const source = fetch_and_advance_addr<viua::kernel::Register*>(
+        auto const source = fetch_and_advance_addr<viua::kernel::Register*>(
             viua::bytecode::decoder::operands::fetch_register, addr, this);
         object = source->give();
     }
