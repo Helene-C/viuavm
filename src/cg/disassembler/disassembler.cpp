@@ -85,9 +85,6 @@ auto disassembler::intop_with_rs_type(viua::internals::types::byte* ptr)
                      viua::internals::types::byte>(ptr);
         oss << ' ';
         switch (*reinterpret_cast<viua::internals::RegisterSets*>(ptr)) {
-        case viua::internals::RegisterSets::CURRENT:
-            oss << "current";
-            break;
         case viua::internals::RegisterSets::GLOBAL:
             oss << "global";
             break;
@@ -113,9 +110,6 @@ auto disassembler::intop_with_rs_type(viua::internals::types::byte* ptr)
                      viua::internals::types::byte>(ptr);
         oss << ' ';
         switch (*reinterpret_cast<viua::internals::RegisterSets*>(ptr)) {
-        case viua::internals::RegisterSets::CURRENT:
-            oss << "current";
-            break;
         case viua::internals::RegisterSets::GLOBAL:
             oss << "global";
             break;
@@ -136,9 +130,6 @@ auto disassembler::intop_with_rs_type(viua::internals::types::byte* ptr)
                      viua::internals::types::byte>(ptr);
         oss << ' ';
         switch (*reinterpret_cast<viua::internals::RegisterSets*>(ptr)) {
-        case viua::internals::RegisterSets::CURRENT:
-            oss << "current";
-            break;
         case viua::internals::RegisterSets::GLOBAL:
             oss << "global";
             break;
