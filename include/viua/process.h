@@ -468,7 +468,6 @@ class Process {
     viua::internals::types::byte* dispatch(viua::internals::types::byte*);
     viua::internals::types::byte* tick();
 
-    viua::types::Value* obtain(viua::internals::types::register_index) const;
     void put(viua::internals::types::register_index,
              std::unique_ptr<viua::types::Value>);
 

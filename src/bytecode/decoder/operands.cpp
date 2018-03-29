@@ -110,7 +110,7 @@ static auto extract_register_index(viua::internals::types::byte* ip,
     }
     if (ot == OT_REGISTER_REFERENCE) {
         auto i =
-            static_cast<viua::types::Integer*>(process->obtain(register_index));
+            static_cast<viua::types::Integer*>(process->register_at(register_index)->get());
         // FIXME Number::negative() -> bool is needed
         if (i->as_integer() < 0) {
             throw make_unique<viua::types::Exception>(
@@ -147,7 +147,7 @@ static auto extract_register_type_and_index(viua::internals::types::byte* ip,
     }
     if (ot == OT_REGISTER_REFERENCE) {
         auto const i =
-            static_cast<viua::types::Integer*>(process->obtain(register_index));
+            static_cast<viua::types::Integer*>(process->register_at(register_index)->get());
         // FIXME Number::negative() -> bool is needed
         if (i->as_integer() < 0) {
             throw make_unique<viua::types::Exception>(
@@ -262,7 +262,7 @@ auto viua::bytecode::decoder::operands::fetch_primitive_int(
         // cast will go away because the operand *will* be encoded as a real
         // uint
         viua::types::Integer* i =
-            static_cast<viua::types::Integer*>(p->obtain(index));
+            static_cast<viua::types::Integer*>(p->register_at(index)->get());
 
         // FIXME plain_int (as encoded in bytecode) is 32 bits, but in-program
         // integer is 64 bits
