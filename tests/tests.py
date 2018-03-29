@@ -1546,6 +1546,7 @@ class HigherOrderFunctionTests(unittest.TestCase):
     def testApplyByMove(self):
         runTest(self, 'apply_by_move.asm', '25')
 
+    @unittest.skip('frame instruction needs to have register-indirect access mode implemented')
     def testInvoke(self):
         runTestSplitlines(self, 'invoke.asm', ['42', '42'])
 
@@ -3306,6 +3307,7 @@ class StandardRuntimeLibraryModuleVector(unittest.TestCase):
         runTest(self, 'any_returns_false.asm', 'false')
 
 
+@unittest.skip('FIXME frame, param, pamv must have register-indirect access implemented')
 class StandardRuntimeLibraryModuleFunctional(unittest.TestCase):
     PATH = './sample/standard_library/functional'
 
