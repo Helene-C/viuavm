@@ -38,9 +38,7 @@ viua::internals::types::register_index const
 viua::kernel::Register* viua::process::Process::register_at(
     viua::internals::types::register_index i,
     viua::internals::RegisterSets rs) {
-    if (rs == viua::internals::RegisterSets::CURRENT) {
-        return currently_used_register_set->register_at(i);
-    } else if (rs == viua::internals::RegisterSets::LOCAL) {
+    if (rs == viua::internals::RegisterSets::LOCAL) {
         return stack->back()->local_register_set->register_at(i);
     } else if (rs == viua::internals::RegisterSets::STATIC) {
         ensure_static_registers(stack->back()->function_name);
@@ -82,7 +80,6 @@ void viua::process::Process::push_frame() {
         throw make_unique<viua::types::Exception>(oss.str());
     }
 
-    currently_used_register_set = stack->frame_new->local_register_set.get();
     if (find(stack->begin(), stack->end(), stack->frame_new) != stack->end()) {
         ostringstream oss;
         oss << "stack corruption: frame " << hex << stack->frame_new.get()
