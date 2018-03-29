@@ -41,11 +41,6 @@ using viua::cg::lex::TracedSyntaxError;
 using viua::internals::RegisterSets;
 auto register_set_names = std::map<RegisterSets, std::string>{
     {
-        // FIXME 'current' as a register set name should be deprecated.
-        RegisterSets::CURRENT,
-        "current",
-    },
-    {
         RegisterSets::GLOBAL,
         "global",
     },
