@@ -156,9 +156,7 @@ static string resolveregister(Token token,
 }
 
 static viua::internals::RegisterSets resolve_rs_type(Token token) {
-    if (token == "current") {
-        return viua::internals::RegisterSets::CURRENT;
-    } else if (token == "local") {
+    if (token == "local") {
         return viua::internals::RegisterSets::LOCAL;
     } else if (token == "static") {
         return viua::internals::RegisterSets::STATIC;

@@ -136,7 +136,7 @@ auto is_timeout_literal(string const s) -> bool {
 }
 
 auto is_register_set_name(string const s) -> bool {
-    return (s == "local" or s == "static" or s == "global" or s == "current");
+    return (s == "local" or s == "static" or s == "global");
 }
 
 auto isfloat(std::string const& s, bool negatives) -> bool {

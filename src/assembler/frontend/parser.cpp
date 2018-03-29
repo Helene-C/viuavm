@@ -152,7 +152,7 @@ auto viua::assembler::frontend::parser::parse_operand(
 
         auto has_rss = true;
         if (tokens.at(i) == "current") {
-            ri->rss = RegisterSets::CURRENT;
+            throw InvalidSyntax{tokens.at(i), "current register set is illegal"};
         } else if (tokens.at(i) == "local") {
             ri->rss = RegisterSets::LOCAL;
         } else if (tokens.at(i) == "static") {
