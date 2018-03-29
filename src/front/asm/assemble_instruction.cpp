@@ -249,6 +249,16 @@ static auto convert_token_to_timeout_operand(viua::cg::lex::Token token)
     }
     return timeout_op{timeout_milliseconds};
 }
+static auto convert_token_to_double(viua::cg::lex::Token const& token) -> double {
+    if (token.str() == "default") {
+        return 0.0;
+    }
+    try {
+        return std::stod(token.str());
+    } catch (std::invalid_argument const&) {
+        throw viua::cg::lex::InvalidSyntax{token, "invalid floating point literal"};
+    }
+}
 viua::internals::types::bytecode_size assemble_instruction(
     Program& program,
     viua::internals::types::bytecode_size& instruction,
@@ -307,7 +317,7 @@ viua::internals::types::bytecode_size assemble_instruction(
         program.opfloat(assembler::operands::getint_with_rs_type(
                             resolveregister(tokens.at(target)),
                             resolve_rs_type(tokens.at(target + 1))),
-                        stod(tokens.at(source).str()));
+                        convert_token_to_double(tokens.at(source)));
     } else if (tokens.at(i) == "itof") {
         TokenIndex target = i + 1;
         TokenIndex source = target + 2;

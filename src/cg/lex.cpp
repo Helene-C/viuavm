@@ -1652,10 +1652,12 @@ auto normalise(vector<Token> input_tokens) -> vector<Token> {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "local");
+            } else {
+                tokens.push_back(input_tokens.at(++i));
             }
             if (input_tokens.at(i + 1) == "\n") {
-                tokens.emplace_back(input_tokens.at(i).line(),
-                                    input_tokens.at(i).character(),
+                tokens.emplace_back(input_tokens.at(i + 1).line(),
+                                    input_tokens.at(i + 1).character(),
                                     "0.0");
             }
             continue;
