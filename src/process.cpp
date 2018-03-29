@@ -185,12 +185,12 @@ viua::internals::types::byte* viua::process::Process::call_foreign_method(
     unique_ptr<viua::types::Value> returned;
     if (return_register != nullptr) {
         // we check in 0. register because it's reserved for return values
-        if (currently_used_register_set->at(0) == nullptr) {
+        if (stack->back()->local_register_set->at(0) == nullptr) {
             throw make_unique<viua::types::Exception>(
                 "return value requested by frame but foreign method did not "
                 "set return register");
         }
-        returned = currently_used_register_set->pop(0);
+        returned = stack->back()->local_register_set->pop(0);
     }
 
     stack->pop();
