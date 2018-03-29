@@ -43,6 +43,8 @@ auto check_op_enter(Register_usage_profile& register_usage_profile,
     try {
         check_register_usage_for_instruction_block_impl(
             register_usage_profile, ps, ps.block(block_name), 0, 0);
+    } catch (std::out_of_range const& e) {
+        throw InvalidSyntax{label->tokens.at(0), "reference to undefined block: " + label->tokens.at(0).str()};
     } catch (InvalidSyntax& e) {
         throw TracedSyntaxError{}.append(e).append(InvalidSyntax{
             label->tokens.at(0), "after entering block " + block_name});
