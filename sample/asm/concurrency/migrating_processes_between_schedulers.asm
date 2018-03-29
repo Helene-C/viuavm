@@ -24,12 +24,12 @@
     call std::misc::cycle/1
 
     .name: 2 format_args
-    vector %format_args (arg %1 %0) %1
+    vector %format_args local (arg %1 local %0) local %1
 
     .name: 1 format_string
     string %format_string "Hello #{0}!\n"
 
-    frame ^[(param %0 %format_string) (param %1 %format_args)]
+    frame ^[(param %0 %format_string) (param %1 %format_args local)]
     msg %3 format/
 
     echo %3
