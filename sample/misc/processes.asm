@@ -67,7 +67,7 @@
     frame ^[(param %0 %1) (param %1 (integer %2 512))]
     msg void setPriority/2
 
-    join %0 %1
+    join void %1
 
     print (string %2 "main/1 exited")
 
