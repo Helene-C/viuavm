@@ -27,7 +27,6 @@ using namespace std;
 
 viua::process::Stack::Stack(string fn,
                             Process* pp,
-                            viua::kernel::RegisterSet** curs,
                             viua::kernel::RegisterSet* gs,
                             viua::scheduler::VirtualProcessScheduler* sch)
         : current_state(STATE::RUNNING)
@@ -39,7 +38,6 @@ viua::process::Stack::Stack(string fn,
         , try_frame_new(nullptr)
         , thrown(nullptr)
         , caught(nullptr)
-        , currently_used_register_set(curs)
         , global_register_set(gs)
         , return_value(nullptr)
         , scheduler(sch) {}
@@ -67,9 +65,8 @@ auto viua::process::Stack::state_of(const STATE s) -> STATE {
     return previous_state;
 }
 
-auto viua::process::Stack::bind(viua::kernel::RegisterSet** curs,
+auto viua::process::Stack::bind(
                                 viua::kernel::RegisterSet* gs) -> void {
-    currently_used_register_set = curs;
     global_register_set         = gs;
 }
 
@@ -94,12 +91,11 @@ auto viua::process::Stack::register_deferred_calls_from(Frame* frame) -> void {
     for (auto& each : frame->deferred_calls) {
         auto s = make_unique<Stack>(each->function_name,
                                     parent_process,
-                                    currently_used_register_set,
                                     global_register_set,
                                     scheduler);
         s->emplace_back(std::move(each));
         s->instruction_pointer = adjust_jump_base_for(s->at(0)->function_name);
-        s->bind(currently_used_register_set, global_register_set);
+        s->bind(global_register_set);
         parent_process->stacks_order.push(s.get());
         parent_process->stacks[s.get()] = std::move(s);
     }
@@ -136,12 +132,6 @@ auto viua::process::Stack::pop() -> unique_ptr<Frame> {
 
     if (size() == 0) {
         return_value = frame->local_register_set->pop(0);
-    }
-
-    if (size()) {
-        *currently_used_register_set = back()->local_register_set.get();
-    } else {
-        *currently_used_register_set = global_register_set;
     }
 
     return frame;
@@ -202,8 +192,6 @@ auto viua::process::Stack::unwind_call_stack_to(const Frame* frame) -> void {
         if (not parent_process->stacks_order.empty()) {
             parent_process->stack = parent_process->stacks_order.top();
             parent_process->stacks_order.pop();
-            parent_process->currently_used_register_set =
-                parent_process->stack->back()->local_register_set.get();
             return;
         }
     }
@@ -304,8 +292,6 @@ auto viua::process::Stack::unwind() -> void {
         if (not parent_process->stacks_order.empty()) {
             parent_process->stack = parent_process->stacks_order.top();
             parent_process->stacks_order.pop();
-            parent_process->currently_used_register_set =
-                parent_process->stack->back()->local_register_set.get();
         }
     }
 }
@@ -328,7 +314,6 @@ auto viua::process::Stack::push_prepared_frame() -> void {
         throw make_unique<viua::types::Exception>(oss.str());
     }
 
-    *currently_used_register_set = frame_new->local_register_set.get();
     if (find(begin(), end(), frame_new) != end()) {
         ostringstream oss;
         oss << "stack corruption: frame ";

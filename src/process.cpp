@@ -482,7 +482,6 @@ viua::process::Process::Process(unique_ptr<Frame> frm,
         , scheduler(sch)
         , parent_process(pt)
         , global_register_set(nullptr)
-        , currently_used_register_set(nullptr)
         , stack(nullptr)
         , finished(false)
         , is_joinable(true)
@@ -492,14 +491,12 @@ viua::process::Process::Process(unique_ptr<Frame> frm,
         , is_hidden(false) {
     global_register_set =
         make_unique<viua::kernel::RegisterSet>(DEFAULT_REGISTER_SIZE);
-    currently_used_register_set = frm->local_register_set.get();
     auto s                      = make_unique<Stack>(frm->function_name,
                                 this,
-                                &currently_used_register_set,
                                 global_register_set.get(),
                                 scheduler);
     s->emplace_back(std::move(frm));
-    s->bind(&currently_used_register_set, global_register_set.get());
+    s->bind(global_register_set.get());
     stack           = s.get();
     stacks[s.get()] = std::move(s);
 }

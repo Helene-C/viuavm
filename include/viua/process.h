@@ -112,10 +112,8 @@ class Stack {
     std::unique_ptr<viua::types::Value> caught;
 
     /*
-     *  Currently used register, and
-     *  global register set of parent process.
+     *  Global register set of parent process.
      */
-    viua::kernel::RegisterSet** currently_used_register_set;
     viua::kernel::RegisterSet* global_register_set;
 
     /*  Variables set after the VM has executed bytecode.
@@ -138,7 +136,7 @@ class Stack {
 
     viua::scheduler::VirtualProcessScheduler* scheduler;
 
-    auto bind(viua::kernel::RegisterSet**, viua::kernel::RegisterSet*) -> void;
+    auto bind(viua::kernel::RegisterSet*) -> void;
 
     auto begin() const -> decltype(frames.begin());
     auto end() const -> decltype(frames.end());
@@ -167,7 +165,6 @@ class Stack {
 
     Stack(std::string,
           Process*,
-          viua::kernel::RegisterSet**,
           viua::kernel::RegisterSet*,
           viua::scheduler::VirtualProcessScheduler*);
 
@@ -205,15 +202,6 @@ class Process {
     bool watchdog_failed{false};
 
     std::unique_ptr<viua::kernel::RegisterSet> global_register_set;
-
-    /*
-     * This pointer points different register sets during the process's
-     * lifetime. It can be explicitly adjusted by the user code (using "ress"
-     * instruction), or implicitly by the VM (e.g. when calling a closure).
-     * FIXME Remove this. It is not needed after "ress" was removed. The
-     * "current" pseudo-register set must also be removed for this to be viable.
-     */
-    viua::kernel::RegisterSet* currently_used_register_set;
 
     // Static registers
     std::map<std::string, std::unique_ptr<viua::kernel::RegisterSet>>
