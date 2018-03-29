@@ -60,7 +60,8 @@ viua::internals::types::byte* viua::process::Process::opvector(
         // register
         throw make_unique<viua::types::Exception>("vector would pack itself");
     }
-    if ((pack_start_ri + pack_size) >= currently_used_register_set->size()) {
+    if ((pack_start_ri + pack_size)
+        >= stack->back()->local_register_set->size()) {
         throw make_unique<viua::types::Exception>(
             "vector: packing outside of register set range");
     }
@@ -69,6 +70,14 @@ viua::internals::types::byte* viua::process::Process::opvector(
             throw make_unique<viua::types::Exception>(
                 "vector: cannot pack null register");
         }
+    }
+    // Check the pack_size, because if it's zero then it doesn't matter what
+    // register set is used because there will be no packing.
+    if (pack_size and (pack_start_rs != viua::internals::RegisterSets::LOCAL)) {
+        throw make_unique<viua::types::Exception>(
+            "packing vector from non-local register set is not allowed: "
+            + std::to_string(static_cast<uint64_t>(pack_start_rs)) + " "
+            + std::to_string(pack_size));
     }
 
     auto v = make_unique<viua::types::Vector>();

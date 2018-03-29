@@ -66,6 +66,7 @@ There are several categories of change:
   `saturatingsmul`, and `saturatingsdiv` instructions for saturating signed arithmetic on fixed-width integers
 - feature: `draw` instruction now supports `void` as target register
 - bic: remove `ress` instruction
+- bic: it is now illegal to pack vectors from register sets other than `local`
 
 Fixed-width arithmetic instructions interpret bit strings as two's complement fixed-width integers when
 signed arithmetic is requested.
