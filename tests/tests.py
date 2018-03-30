@@ -1765,6 +1765,7 @@ class TryCatchBlockTests(unittest.TestCase):
         runTest(self, 'catching_builtin_type.asm', '42')
 
 
+@unittest.skip('prototypes will be removed from the VM')
 class PrototypeSystemTests(unittest.TestCase):
     """Tests for prototype system inside the machine.
     """
