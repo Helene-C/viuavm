@@ -21,18 +21,18 @@
 
 
 .function: printer_wrapper/1
-    -- just print %the parameter received
-    frame ^[(pamv %0 (arg %1 %0))]
+    -- just print the parameter received
+    frame ^[(pamv %0 (arg %1 local %0) local)]
     call printer::print/1
 
     return
 .end
 
 .function: process_spawner/1
-    -- call %printer::print/1 in a new %process %to
-    -- not %block %the execution, and
-    -- detach the process %as we do not %care %about its return value
-    frame ^[(pamv %0 (arg %1 %0))]
+    -- call printer::print/1 in a new process to
+    -- not block the execution, and
+    -- detach the process as we do not care about its return value
+    frame ^[(pamv %0 (arg %1 local %0) local)]
     process void printer_wrapper/1
     return
 .end
@@ -42,45 +42,45 @@
     import "build/test/printer"
 
     -- spawn several processes, each printing a different "Hello {who}!"
-    -- the hellos do not %have %to appear in the order their functions are
-    -- called if %there are multiple FFI or %VP %schedulers %spawned
+    -- the hellos do not have to appear in the order their functions are
+    -- called if there are multiple FFI or VP schedulers spawned
     --
     -- this program is embarrassingly simple but it exhibits the uncertainty
     -- of order the parallelism introduces
-    frame ^[(pamv %0 (string %1 "Joe"))]
+    frame ^[(pamv %0 (string %1 local "Joe") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Robert"))]
+    frame ^[(pamv %0 (string %1 local "Robert") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Mike"))]
+    frame ^[(pamv %0 (string %1 local "Mike") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Bjarne"))]
+    frame ^[(pamv %0 (string %1 local "Bjarne") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Guido"))]
+    frame ^[(pamv %0 (string %1 local "Guido") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Dennis"))]
+    frame ^[(pamv %0 (string %1 local "Dennis") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Bram"))]
+    frame ^[(pamv %0 (string %1 local "Bram") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Herb"))]
+    frame ^[(pamv %0 (string %1 local "Herb") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Anthony"))]
+    frame ^[(pamv %0 (string %1 local "Anthony") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Alan"))]
+    frame ^[(pamv %0 (string %1 local "Alan") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Ada"))]
+    frame ^[(pamv %0 (string %1 local "Ada") local)]
     call process_spawner/1
 
-    frame ^[(pamv %0 (string %1 "Charles"))]
+    frame ^[(pamv %0 (string %1 local "Charles") local)]
     call process_spawner/1
 
     izero %0 local
