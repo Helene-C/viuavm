@@ -63,7 +63,7 @@
     nop
     nop
 
-    print (string %3 "main/1 exited")
+    print (string %3 local "main/1 exited") local
 
     izero %0 local
     return

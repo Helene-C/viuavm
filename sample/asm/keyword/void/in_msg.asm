@@ -18,11 +18,11 @@
 ;
 
 .function: main/0
-    string (.name: %iota format) "Hello #{0}!"
+    string (.name: %iota format) local "Hello #{0}!"
 
-    vector (.name: %iota format_params) (string %iota "World") 1
+    vector (.name: %iota format_params) local (string %iota local "World") local %1
 
-    frame ^[(param %iota %format) (param %iota %format_params)]
+    frame ^[(param %iota %format local) (param %iota %format_params local)]
     ;msg void format/
     msg void format/
 

@@ -18,10 +18,10 @@
 ;
 
 .function: main/1
-    new %1 Object
+    new %1 local Object
 
-    insert %1 (string %2 "foo") (integer %3 42)
-    print (isnull %4 %3)
+    insert %1 local (string %2 local "foo") local (integer %3 local 42) local
+    print (isnull %4 local %3 local) local
 
     izero %0 local
     return

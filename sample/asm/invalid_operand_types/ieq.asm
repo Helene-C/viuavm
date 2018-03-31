@@ -18,13 +18,13 @@
 ;
 
 .function: main/1
-    register (class %1 Foo)
-    new %1 Foo
+    register (class %1 local Foo) local
+    new %1 local Foo
 
-    register (class %2 Bar)
-    new %2 Bar
-    eq %3 %1 %2
-    print %3
+    register (class %2 local Bar) local
+    new %2 local Bar
+    eq %3 local %1 local %2 local
+    print %3 local
 
     izero %0 local
     return

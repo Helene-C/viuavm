@@ -18,10 +18,10 @@
 ;
 
 .function: main/1
-    register (class %1 Foo)
-    new %1 Foo
+    register (class %1 local Foo) local
+    new %1 local Foo
 
-    iinc %1
+    iinc %1 local
 
     izero %0 local
     return

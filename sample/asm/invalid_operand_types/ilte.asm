@@ -18,12 +18,12 @@
 ;
 
 .function: main/1
-    string %1 "Hello"
+    string %1 local "Hello"
 
-    register (class %2 Foo)
-    new %2 Foo
-    lte %3 %2 %1
-    print %3
+    register (class %2 local Foo) local
+    new %2 local Foo
+    lte %3 local %2 local %1 local
+    print %3 local
 
     izero %0 local
     return

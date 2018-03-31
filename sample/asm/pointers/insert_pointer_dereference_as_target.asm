@@ -18,13 +18,13 @@
 ;
 
 .function: main/0
-    string (.name: %iota value) "bar"
-    ptr (.name: %iota pointer) (new (.name: %iota container) Object)
-    string (.name: %iota key) "foo"
+    string (.name: %iota value) local "bar"
+    ptr (.name: %iota pointer) local (new (.name: %iota container) local Object) local
+    string (.name: %iota key) local "foo"
 
-    insert *pointer %key %value
+    insert *pointer local %key local %value local
 
-    print %container
+    print %container local
 
     izero %0 local
     return

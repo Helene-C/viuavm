@@ -18,10 +18,10 @@
 ;
 
 .function: main/1
-    float %1 1.0
-    string %2 "Hello World!"
-    div %3 %2 %1
-    print %3
+    float %1 local 1.0
+    string %2 local "Hello World!"
+    div %3 local %2 local %1 local
+    print %3 local
 
     izero %0 local
     return

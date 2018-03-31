@@ -18,23 +18,23 @@
 ;
 
 .function: main/1
-    new %1 Object
-    new %2 Object
+    new %1 local Object
+    new %2 local Object
 
     ; print object to be used as attribute value
     ; before it is inserted
-    print %2
+    print %2 local
 
     .name: 3 key
-    string %key "foo"
+    string %key local "foo"
 
     ; insert and remove
     ; just to test move semantics
-    remove %4 (insert %1 %key %2) %key
+    remove %4 local (insert %1 local %key local %2 local) local %key local
 
     ; print object used as attribute value
     ; after it was removed 
-    print %4
+    print %4 local
 
     izero %0 local
     return

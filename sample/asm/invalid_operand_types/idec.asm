@@ -18,8 +18,8 @@
 ;
 
 .function: main/1
-    function %1 main/1
-    idec %1
+    function %1 local main/1
+    idec %1 local
 
     izero %0 local
     return

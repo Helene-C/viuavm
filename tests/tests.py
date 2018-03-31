@@ -1651,33 +1651,6 @@ class InvalidInstructionOperandTypeTests(unittest.TestCase):
     def testIDEC(self):
         runTestThrowsException(self, 'idec.asm', ('Exception', "fetched invalid type: expected 'Integer' but got 'Function'",))
 
-    def testFADD(self):
-        runTestThrowsException(self, 'fadd.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFSUB(self):
-        runTestThrowsException(self, 'fsub.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFMUL(self):
-        runTestThrowsException(self, 'fmul.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFDIV(self):
-        runTestThrowsException(self, 'fdiv.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFLT(self):
-        runTestThrowsException(self, 'flt.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFLTE(self):
-        runTestThrowsException(self, 'flte.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFGT(self):
-        runTestThrowsException(self, 'fgt.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFGTE(self):
-        runTestThrowsException(self, 'fgte.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
-    def testFEQ(self):
-        runTestThrowsException(self, 'feq.asm', ('Exception', "fetched invalid type: expected 'Number' but got 'Foo'",))
-
 
 class ObjectInstructionsTests(unittest.TestCase):
     """Tests checking detection of invalid operand type during instruction execution.
@@ -1936,9 +1909,6 @@ class AssemblerStaticAnalysisErrorTests(unittest.TestCase):
     def testInsertKeyFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'insert_key_from_empty_register.asm', "./sample/asm/static_analysis_errors/insert_key_from_empty_register.asm:23:28: error: insert key from empty register: key := 2")
 
-    def testInsertFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'insert_from_empty_register.asm', "./sample/asm/static_analysis_errors/insert_from_empty_register.asm:23:48: error: insert from empty register: value := 3")
-
     def testRemoveKeyFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'remove_key_from_empty_register.asm', "./sample/asm/static_analysis_errors/remove_key_from_empty_register.asm:25:41: error: remove key from empty register: key := 3")
 
@@ -2064,10 +2034,10 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
     ASM_FLAGS = ('--new-sa',)
 
     def testMoveFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'move_from_empty_register.asm', './sample/asm/static_analysis_errors/move_from_empty_register.asm:21:13: error: move from empty local register "0"')
+        runTestFailsToAssemble(self, 'move_from_empty_register.asm', './sample/asm/static_analysis_errors/move_from_empty_register.asm:21:19: error: move from empty local register "0"')
 
     def testCopyFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'copy_from_empty_register.asm', './sample/asm/static_analysis_errors/copy_from_empty_register.asm:21:13: error: copy from empty local register "0"')
+        runTestFailsToAssemble(self, 'copy_from_empty_register.asm', './sample/asm/static_analysis_errors/copy_from_empty_register.asm:21:19: error: copy from empty local register "0"')
 
     def testDeleteOfEmptyRegister(self):
         runTestFailsToAssemble(self, 'delete_of_empty_register.asm', './sample/asm/static_analysis_errors/delete_of_empty_register.asm:21:12: error: delete of empty local register "1"')
@@ -2085,7 +2055,7 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
         runTestFailsToAssemble(self, 'swap_with_empty_first_register.asm', './sample/asm/static_analysis_errors/swap_with_empty_first_register.asm:21:10: error: swap with empty local register "1"')
 
     def testSwapWithEmptySecondRegister(self):
-        runTestFailsToAssemble(self, 'swap_with_empty_second_register.asm', './sample/asm/static_analysis_errors/swap_with_empty_second_register.asm:22:13: error: swap with empty local register "2"')
+        runTestFailsToAssemble(self, 'swap_with_empty_second_register.asm', './sample/asm/static_analysis_errors/swap_with_empty_second_register.asm:22:19: error: swap with empty local register "2"')
 
     def testCaptureEmptyRegisterByCopy(self):
         runTestFailsToAssemble(self, 'capture_empty_register_by_copy.asm', './sample/asm/static_analysis_errors/capture_empty_register_by_copy.asm:21:17: error: use of empty local register "2"')
@@ -2121,13 +2091,14 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
                 './sample/asm/static_analysis_errors/and_use_of_empty_register_2nd.asm:22:27: error: use of empty local register "2"')
 
     def testUseOfEmptyFirstRegisterInOr(self):
-        runTestFailsToAssemble(self, 'or_use_of_empty_register_1st.asm', './sample/asm/static_analysis_errors/or_use_of_empty_register_1st.asm:21:11: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'or_use_of_empty_register_1st.asm', './sample/asm/static_analysis_errors/or_use_of_empty_register_1st.asm:21:17: error: use of empty local register "1"')
 
     def testUseOfEmptySecondRegisterInOr(self):
-        runTestFailsToAssemble(self, 'or_use_of_empty_register_2nd.asm', './sample/asm/static_analysis_errors/or_use_of_empty_register_2nd.asm:22:14: error: use of empty local register "2"')
+        runTestFailsToAssemble(self, 'or_use_of_empty_register_2nd.asm',
+                './sample/asm/static_analysis_errors/or_use_of_empty_register_2nd.asm:22:26: error: use of empty local register "2"')
 
     def testIaddOfEmptyRegisters(self):
-        runTestFailsToAssemble(self, 'iadd_of_empty_registers.asm', './sample/asm/static_analysis_errors/iadd_of_empty_registers.asm:21:12: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'iadd_of_empty_registers.asm', './sample/asm/static_analysis_errors/iadd_of_empty_registers.asm:21:18: error: use of empty local register "1"')
 
     def testNotOfEmptyRegisters(self):
         runTestFailsToAssemble(self, 'not_of_empty_register.asm', './sample/asm/static_analysis_errors/not_of_empty_register.asm:21:9: error: use of empty local register "1"')
@@ -2139,7 +2110,7 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
         runTestFailsToAssemble(self, 'cast_of_empty_register_itof.asm', './sample/asm/static_analysis_errors/cast_of_empty_register_itof.asm:21:19: error: use of empty local register "1"')
 
     def testCastOfEmptyRegistersStoi(self):
-        runTestFailsToAssemble(self, 'cast_of_empty_register_stoi.asm', './sample/asm/static_analysis_errors/cast_of_empty_register_stoi.asm:21:13: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'cast_of_empty_register_stoi.asm', './sample/asm/static_analysis_errors/cast_of_empty_register_stoi.asm:21:19: error: use of empty local register "1"')
 
     def testCastOfEmptyRegistersStof(self):
         runTestFailsToAssemble(self, 'cast_of_empty_register_stof.asm', './sample/asm/static_analysis_errors/cast_of_empty_register_stof.asm:21:19: error: use of empty local register "1"')
@@ -2149,7 +2120,8 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
         runTestFailsToAssemble(self, 'vinsert_empties_registers.asm', './sample/asm/static_analysis_errors/vinsert_empties_registers.asm:23:11: error: use of empty local register "1"')
 
     def testVinsertOfEmptyRegister(self):
-        runTestFailsToAssemble(self, 'vinsert_of_empty_register.asm', './sample/asm/static_analysis_errors/vinsert_of_empty_register.asm:21:25: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'vinsert_of_empty_register.asm',
+                './sample/asm/static_analysis_errors/vinsert_of_empty_register.asm:21:37: error: use of empty local register "1"')
 
     def testVinsertIntoEmptyRegister(self):
         runTestFailsToAssemble(self, 'vinsert_into_empty_register.asm', './sample/asm/static_analysis_errors/vinsert_into_empty_register.asm:21:13: error: use of empty local register "2"')
@@ -2158,60 +2130,45 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
         runTestFailsToAssemble(self, 'vpush_empties_registers.asm', './sample/asm/static_analysis_errors/vpush_empties_registers.asm:22:11: error: use of erased local register "1"')
 
     def testVpushOfEmptyRegister(self):
-        runTestFailsToAssemble(self, 'vpush_of_empty_register.asm', './sample/asm/static_analysis_errors/vpush_of_empty_register.asm:21:23: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'vpush_of_empty_register.asm',
+                './sample/asm/static_analysis_errors/vpush_of_empty_register.asm:21:35: error: use of empty local register "1"')
 
     def testVpushIntoEmptyRegister(self):
         runTestFailsToAssemble(self, 'vpush_into_empty_register.asm', './sample/asm/static_analysis_errors/vpush_into_empty_register.asm:21:11: error: use of empty local register "2"')
 
     def testVpopFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'vpop_from_empty_register.asm', './sample/asm/static_analysis_errors/vpop_from_empty_register.asm:21:13: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'vpop_from_empty_register.asm', './sample/asm/static_analysis_errors/vpop_from_empty_register.asm:21:19: error: use of empty local register "1"')
 
     def testVatOnEmptyRegister(self):
-        runTestFailsToAssemble(self, 'vat_on_empty_register.asm', './sample/asm/static_analysis_errors/vat_on_empty_register.asm:21:12: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'vat_on_empty_register.asm', './sample/asm/static_analysis_errors/vat_on_empty_register.asm:21:18: error: use of empty local register "1"')
 
     def testVlenOnEmptyRegister(self):
-        runTestFailsToAssemble(self, 'vlen_on_empty_register.asm', './sample/asm/static_analysis_errors/vlen_on_empty_register.asm:21:13: error: use of empty local register "1"')
-
-    @unittest.skip('deprecated OO instructions')
-    def testInsertIntoEmptyRegister(self):
-        runTestFailsToAssemble(self, 'insert_into_empty_register.asm', './sample/asm/static_analysis_errors/insert_into_empty_register.asm:23:12: error: insert into empty local register "1" (named "target")')
-
-    @unittest.skip('deprecated OO instructions')
-    def testInsertKeyFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'insert_key_from_empty_register.asm', './sample/asm/static_analysis_errors/insert_key_from_empty_register.asm:23:28: error: insert key from empty local register "2" (named "key")')
+        runTestFailsToAssemble(self, 'vlen_on_empty_register.asm', './sample/asm/static_analysis_errors/vlen_on_empty_register.asm:21:19: error: use of empty local register "1"')
 
     @unittest.skip('deprecated OO instructions')
     def testInsertFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'insert_from_empty_register.asm', './sample/asm/static_analysis_errors/insert_from_empty_register.asm:23:48: error: insert from empty local register "3" (named "value")')
 
-    @unittest.skip('deprecated OO instructions')
-    def testRemoveKeyFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'remove_key_from_empty_register.asm', './sample/asm/static_analysis_errors/remove_key_from_empty_register.asm:25:41: error: remove key from empty local register "3" (named "key")')
-
-    @unittest.skip('deprecated OO instructions')
-    def testRemoveFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'remove_from_empty_register.asm', './sample/asm/static_analysis_errors/remove_from_empty_register.asm:25:20: error: remove from empty local register "2" (named "source")')
-
     def testPointerFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'pointer_from_empty_register.asm', './sample/asm/static_analysis_errors/pointer_from_empty_register.asm:21:12: error: pointer from empty local register "1"')
+        runTestFailsToAssemble(self, 'pointer_from_empty_register.asm', './sample/asm/static_analysis_errors/pointer_from_empty_register.asm:21:18: error: pointer from empty local register "1"')
 
     def testThrowFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'throw_from_empty_register.asm', './sample/asm/static_analysis_errors/throw_from_empty_register.asm:21:11: error: throw from empty local register "1"')
 
     def testIsnullFailsOnNonemptyRegisters(self):
-        runTestFailsToAssemble(self, 'isnull_fails_on_nonempty_registers.asm', './sample/asm/static_analysis_errors/isnull_fails_on_nonempty_registers.asm:22:22: error: useless check, register will always be defined')
+        runTestFailsToAssemble(self, 'isnull_fails_on_nonempty_registers.asm', './sample/asm/static_analysis_errors/isnull_fails_on_nonempty_registers.asm:22:28: error: useless check, register will always be defined')
 
     def testFcallFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'fcall_from_empty_register.asm', './sample/asm/static_analysis_errors/fcall_from_empty_register.asm:22:15: error: call from empty local register "1"')
 
     def testJoinFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'join_from_empty_register.asm', './sample/asm/static_analysis_errors/join_from_empty_register.asm:21:13: error: use of empty local register "1"')
+        runTestFailsToAssemble(self, 'join_from_empty_register.asm', './sample/asm/static_analysis_errors/join_from_empty_register.asm:21:19: error: use of empty local register "1"')
 
     def testSendTargetFromEmptyRegister(self):
         runTestFailsToAssemble(self, 'send_target_from_empty_register.asm', './sample/asm/static_analysis_errors/send_target_from_empty_register.asm:22:10: error: send target from empty local register "1" (named "pid")')
 
     def testSendFromEmptyRegister(self):
-        runTestFailsToAssemble(self, 'send_from_empty_register.asm', './sample/asm/static_analysis_errors/send_from_empty_register.asm:27:13: error: send from empty local register "2"')
+        runTestFailsToAssemble(self, 'send_from_empty_register.asm', './sample/asm/static_analysis_errors/send_from_empty_register.asm:27:19: error: send from empty local register "2"')
 
     def testRegisterNameAlreadyTaken(self):
         runTestFailsToAssemble(self, 'register_name_already_taken.asm', './sample/asm/static_analysis_errors/register_name_already_taken.asm:22:14: error: register name already taken: named_register')
@@ -2281,13 +2238,13 @@ class AssemblerStaticAnalysisErrorTestsForNewSA(unittest.TestCase):
 
     def testUseOfEmptyFirstOperandInIadd(self):
         runTestFailsToAssembleDetailed(self, 'use_of_empty_first_operand_in_iadd.asm', [
-            '24:30: error: use of empty local register "1" (named "first")',
+            '24:36: error: use of empty local register "1" (named "first")',
             '20:12: error: in function main/0',
         ])
 
     def testUseOfEmptySecondOperandInIadd(self):
         runTestFailsToAssembleDetailed(self, 'use_of_empty_second_operand_in_iadd.asm', [
-            '24:37: error: use of empty local register "2" (named "second")',
+            '24:49: error: use of empty local register "2" (named "second")',
             '20:12: error: in function main/0',
         ])
 
