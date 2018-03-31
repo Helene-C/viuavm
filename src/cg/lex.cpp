@@ -720,7 +720,8 @@ auto standardise(vector<Token> input_tokens) -> vector<Token> {
                     tokens.back().line(), tokens.back().character(), "local");
             }
 
-            if (input_tokens.at(i + 1).str() == "\n") {
+            if (input_tokens.at(i + 1).str() == "\n"
+                or input_tokens.at(i + 1).str() == "default") {
                 tokens.emplace_back(input_tokens.at(i + 1).line(),
                                     input_tokens.at(i + 1).character(),
                                     "infinity");
@@ -880,8 +881,11 @@ auto standardise(vector<Token> input_tokens) -> vector<Token> {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "local");
+            } else {
+                tokens.push_back(input_tokens.at(++i));
             }
-            if (input_tokens.at(i + 1) == "\n") {
+            if (input_tokens.at(i + 1) == "\n"
+                or input_tokens.at(i + 1) == "default") {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "0");
@@ -909,9 +913,11 @@ auto standardise(vector<Token> input_tokens) -> vector<Token> {
                                     input_tokens.at(i).character(),
                                     "local");
             } else {
-                tokens.push_back(input_tokens.at(++i));  // target register set specifier
+                tokens.push_back(input_tokens.at(++i));  // target register set
+                                                         // specifier
             }
-            if (input_tokens.at(i + 1) == "\n") {
+            if (input_tokens.at(i + 1) == "\n"
+                or input_tokens.at(i + 1) == "default") {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "\"\"");
@@ -1065,9 +1071,9 @@ auto standardise(vector<Token> input_tokens) -> vector<Token> {
             }
 
             if (input_tokens.at(i + 1) == "\n") {
-                tokens.emplace_back(tokens.at(tokens.size()-2).line(),
-                                    tokens.at(tokens.size()-2).character(),
-                                    tokens.at(tokens.size()-2).str());
+                tokens.emplace_back(tokens.at(tokens.size() - 2).line(),
+                                    tokens.at(tokens.size() - 2).character(),
+                                    tokens.at(tokens.size() - 2).str());
                 tokens.emplace_back(tokens.back().line(),
                                     tokens.back().character(),
                                     target_register_set);
@@ -1489,7 +1495,8 @@ auto normalise(vector<Token> input_tokens) -> vector<Token> {
                     tokens.back().line(), tokens.back().character(), "local");
             }
 
-            if (input_tokens.at(i + 1).str() == "\n") {
+            if (input_tokens.at(i + 1).str() == "\n"
+                or input_tokens.at(i + 1).str() == "default") {
                 tokens.emplace_back(input_tokens.at(i + 1).line(),
                                     input_tokens.at(i + 1).character(),
                                     "infinity");
@@ -1641,8 +1648,11 @@ auto normalise(vector<Token> input_tokens) -> vector<Token> {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "local");
+            } else {
+                tokens.push_back(input_tokens.at(++i));
             }
-            if (input_tokens.at(i + 1) == "\n") {
+            if (input_tokens.at(i + 1) == "\n"
+                or input_tokens.at(i + 1) == "default") {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "0");
@@ -1670,7 +1680,8 @@ auto normalise(vector<Token> input_tokens) -> vector<Token> {
                                     input_tokens.at(i).character(),
                                     "local");
             }
-            if (input_tokens.at(i + 1) == "\n") {
+            if (input_tokens.at(i + 1) == "\n"
+                or input_tokens.at(i + 1) == "default") {
                 tokens.emplace_back(input_tokens.at(i).line(),
                                     input_tokens.at(i).character(),
                                     "\"\"");
@@ -1815,9 +1826,9 @@ auto normalise(vector<Token> input_tokens) -> vector<Token> {
             }
 
             if (input_tokens.at(i + 1) == "\n") {
-                tokens.emplace_back(tokens.at(tokens.size()-2).line(),
-                                    tokens.at(tokens.size()-2).character(),
-                                    tokens.at(tokens.size()-2).str());
+                tokens.emplace_back(tokens.at(tokens.size() - 2).line(),
+                                    tokens.at(tokens.size() - 2).character(),
+                                    tokens.at(tokens.size() - 2).str());
                 tokens.emplace_back(tokens.back().line(),
                                     tokens.back().character(),
                                     target_register_set);
