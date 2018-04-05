@@ -356,7 +356,7 @@ auto tokenise(string const& source) -> vector<Token> {
     return tokens;
 }
 
-static auto is_register_set_name(string const s) -> bool {
+auto is_register_set_name(string const& s) -> bool {
     return (s == "local" or s == "static" or s == "global");
 }
 static auto is_register_index(string const s) -> bool {
