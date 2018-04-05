@@ -18,8 +18,8 @@
 ;
 
 .function: consumer/0
-    print (receive %2)
-    print (string %1 "consumer/0: exiting")
+    print (receive %2 local) local
+    print (string %1 local "consumer/0: exiting") local
     return
 .end
 
@@ -29,11 +29,11 @@
     ; the producer will read users input and
     ; send it to the consumer
     frame %0
-    call %2 std::io::getline/0
+    call %2 local std::io::getline/0
 
-    print (string %1 "producer/1: exiting")
+    print (string %1 local "producer/1: exiting") local
 
-    frame ^[(param %0 (arg %3 %0)) (param %1 %2)]
+    frame ^[(param %0 (arg %3 local %0) local) (param %1 %2 local)]
     msg void pass/2
 
     return
@@ -51,7 +51,7 @@
     ;
     ; pass-by-move to avoid copying, the handle will not be used by main/1 at
     ; any later point
-    frame ^[(pamv %0 %1)]
+    frame ^[(pamv %0 %1 local)]
     process void producer/1
 
     ; main/1 may safely exit
